@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
+let user = require('../Constant/userList');
+
 router.get('/',(req,res,next) => {
     res.send('signup')
 })
 router.post('/',(req,res,next)=>{
+   
     let { username,password,name,email} = req.body;
     let userExist = false;
     for(let i =0; i<user.length;i++){
