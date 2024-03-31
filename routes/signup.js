@@ -17,6 +17,12 @@ router.post('/',(req,res,next)=>{
     }
     if(!userExist){
         console.log("enter user to the db");
+        user.push({
+            userName : username,
+            passWord : password,
+            name : name,
+            email : email
+        })
         res.status(200).json({
             "__success_msg__" : `${username}'s account created`
         })
