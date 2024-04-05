@@ -30,7 +30,7 @@ router.post('/',(req,res,next)=>{
         let token = jwt.sign({ id: "12312", username: username }, process.env.JWT_secret_key , { expiresIn: '1h' });
         res.status(200).json({
             "__successmsg__" : "__login successful",
-            "token" : `Bearer ${token}`
+            "token" : `${token}`
         })
     }
 })

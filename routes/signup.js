@@ -23,6 +23,7 @@ router.post('/',(req,res,next)=>{
             name : name,
             email : email
         })
+        console.log(user);
         res.status(200).json({
             "__success_msg__" : `${username}'s account created`
         })

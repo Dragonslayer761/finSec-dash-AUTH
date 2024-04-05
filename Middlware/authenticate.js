@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
-const jwtSecret = process.env.JWT_secret_key;
 
 const authenticate = (req, res, next) => {
-  if (!req.body.token) {
-    res.status(404);
-  }
+  const jwtSecret = process.env.JWT_secret_key;
   try {
-    const decoded = jwt.verify(req.body.token, jwtSecret);
+    if (!req.headers && req.headers.authorization !== undefined && req.headers.authorization !== "") {
+      res.status(404);
+    }
+    let token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(token, jwtSecret);
     req.user = decoded; // Attach the decoded user to the request object
     next(); // Call the next middleware or route handler
   } catch (error) {
