@@ -12,7 +12,7 @@ router.get('/',(req,res,next) => {
 router.post('/sendusername',checkuser,(req,res,next)=>{
     const {username,indexUser} = req.body;
    
-    if(indexUser){
+    if(indexUser <= 0){
         res.status(202).json({
             userExist : `${username} exist`,
             changePassword : true
