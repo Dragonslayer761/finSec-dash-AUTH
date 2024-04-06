@@ -7,10 +7,9 @@ var cors = require('cors');
 const { expressjwt: jwt } = require('express-jwt');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 let loginRouter = require('./routes/login');
 let signupRouter = require('./routes/signup');
-let profileRouter = require('./routes/profile');
+let forgetPWD =  require('./routes/forgetPWD');
 
 var app = express();
 
@@ -24,13 +23,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-app.use(jwt({ secret: process.env.JWT_secret_key, algorithms: ['HS256'] }).unless({ path: ['/login','/signup'] }));
+app.use(jwt({ secret: process.env.JWT_secret_key, algorithms: ['HS256'] }).unless({ path: ['/login','/signup','/forgetPassword/passwordchange','/forgetPassword/sendusername'] }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/login',loginRouter);
 app.use('/signup',signupRouter);
-app.use('/profile',profileRouter);
+app.use('/forgetPassword',forgetPWD);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
