@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-const { expressjwt: jwt } = require('express-jwt');
 
-var indexRouter = require('./routes/index');
+
+
 let loginRouter = require('./routes/login');
 let signupRouter = require('./routes/signup');
 let forgetPWD =  require('./routes/forgetPWD');
@@ -23,9 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-app.use(jwt({ secret: process.env.JWT_secret_key, algorithms: ['HS256'] }).unless({ path: ['/login','/signup','/forgetPassword/passwordchange','/forgetPassword/sendusername'] }));
 
-app.use('/', indexRouter);
 app.use('/login',loginRouter);
 app.use('/signup',signupRouter);
 app.use('/forgetPassword',forgetPWD);
