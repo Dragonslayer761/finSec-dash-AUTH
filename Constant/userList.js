@@ -22,4 +22,14 @@ const user = [
       }
   ]
 
+// const user1 = {
+//   name:string,
+//   username:string,
+//   password:string,
+//   email:string,
+//   role:enum,
+//   createdat:datetime,
+//   modified at:datetime
+// }
+
 module.exports = user;

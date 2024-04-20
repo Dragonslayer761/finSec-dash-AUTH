@@ -24,9 +24,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.use('/login',loginRouter);
-app.use('/signup',signupRouter);
-app.use('/forgetPassword',forgetPWD);
+app.use('/auth/login',loginRouter);
+app.use('/auth/signup',signupRouter);
+app.use('/auth/forgetPassword',forgetPWD);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

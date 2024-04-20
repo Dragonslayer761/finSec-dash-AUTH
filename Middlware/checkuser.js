@@ -1,6 +1,6 @@
 const user = require('../Constant/userList')
 
-const checuser = (req,res,next) =>{
+function checkUser(req,res,next){
     const {username}  = req.body;
     let userExist = false;
     user.forEach((data,index) =>{
@@ -18,4 +18,4 @@ const checuser = (req,res,next) =>{
     }
 }
 
-module.exports = checuser;
+module.exports = {checkUser};
