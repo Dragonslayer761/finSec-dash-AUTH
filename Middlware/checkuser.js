@@ -9,13 +9,8 @@ function checkUser(req,res,next){
             userExist = true
         }
     })
-    if(userExist){
-        next();
-    }else{
-        res.status(404).json({
-            _error_ : `${username} username not found`
-        })
-    }
+    req.body['userExist'] = userExist;
+    next();
 }
 
 module.exports = {checkUser};
