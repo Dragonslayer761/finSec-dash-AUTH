@@ -22,10 +22,10 @@ const globalErrorHandler = (err, req, res, next) => {
     if (err.name === 'SequelizeUniqueConstraintError') {
         err = new AppError(err.errors[0].message, 400);
     }
-    if (process.env.NODE_ENV === 'development') {
-        return sendErrorDev(err, res);
-    }
-    sendErrorProd(err, res);
+   // if (process.env.NODE_ENV === 'development') {
+        return sendErrorOnDev(err, res);
+   // }
+   // sendErrorProd(err, res);
 };
 
 

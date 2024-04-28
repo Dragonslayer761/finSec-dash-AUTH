@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-// let user = require('../Constant/userList');
-const {checkUser} = require('../Middlware/checkuser');
 const user = require('../db/models/user');
 const {sequelize} = require('../config/database')
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require('sequelize');
+const { catchAsync } = require('../Utils/catchAsync');
+const {AppError} = require('../Utils/appError');
 
 router.get('/',(req,res,next) => {
     res.send('signup')
 })
-router.post('/',checkUser,async(req,res,next)=>{
+router.post('/',catchAsync(async(req,res,next)=>{
     let { username,password,firstname,lastname,email,indexUser} = req.body;
     if(!indexUser || indexUser < 0){
         const USER = user(sequelize,Sequelize.DataTypes);
@@ -27,15 +27,12 @@ router.post('/',checkUser,async(req,res,next)=>{
                 "data" : userObj
             })
         }else{
-            res.status(400).json({
-                "_err" : "Unable to create user."
-            })
+            
+            throw new AppError("Unable to create user.",400);
         }
        
     }else{
-        res.status(400).json({
-            "_err" : "Unable to create user. Username exist"
-        })
+        throw new AppError( "Unable to create user. Username exist",400)
     }
-})
+}))
 module.exports = router;

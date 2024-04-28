@@ -5,11 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 const { expressjwt: jwt } = require('express-jwt');
+const {catchAsync} = require('./Utils/catchAsync');
+const {globalErrorHandler} = require('./Middlware/errorHandler');
 
 
 let loginRouter = require('./routes/login');
 let signupRouter = require('./routes/signup');
 let forgetPWD =  require('./routes/forgetPWD');
+const AppError = require('./Utils/appError');
 
 var app = express();
 
@@ -28,20 +31,12 @@ app.use(jwt({ secret: process.env.JWT_secret_key, algorithms: ['HS256'] }).unles
 app.use('/auth/login',loginRouter);
 app.use('/auth/signup',signupRouter);
 app.use('/auth/forgetPassword',forgetPWD);
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use('*',catchAsync(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  throw new AppError('Route don\'t exist on this server',400);
+}));
+app.use(globalErrorHandler);
 
 module.exports = app;
