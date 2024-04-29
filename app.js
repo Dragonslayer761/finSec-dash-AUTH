@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-const { expressjwt: jwt } = require('express-jwt');
 const {catchAsync} = require('./Utils/catchAsync');
 const {globalErrorHandler} = require('./Middlware/errorHandler');
 
@@ -12,7 +11,7 @@ const {globalErrorHandler} = require('./Middlware/errorHandler');
 let loginRouter = require('./routes/login');
 let signupRouter = require('./routes/signup');
 let forgetPWD =  require('./routes/forgetPWD');
-const AppError = require('./Utils/appError');
+const {AppError} = require('./Utils/appError');
 
 var app = express();
 
@@ -26,7 +25,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-app.use(jwt({ secret: process.env.JWT_secret_key, algorithms: ['HS256'] }).unless({ path: ["/auth/login","/auth/signup"] }));
 
 app.use('/auth/login',loginRouter);
 app.use('/auth/signup',signupRouter);

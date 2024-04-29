@@ -15,4 +15,9 @@ const authenticate = (req, res, next) => {
   }
 };
 
-module.exports = authenticate;
+const generateToken = (content) => {
+  const token = jwt.sign(content,process.env.JWT_secret_key,{algorithm : 'HS256',expiresIn : process.env.JWT_EXPIRY});
+  return token;
+}
+
+module.exports = {authenticate,generateToken};
