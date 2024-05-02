@@ -2,7 +2,6 @@ require("dotenv").config();
 var express = require("express");
 var router = express.Router();
 const user = require("../db/models/user");
-const jwt = require("jsonwebtoken");
 const { sequelize } = require("../config/database");
 const { Sequelize } = require("sequelize");
 const authtoken = require("../db/models/authtoken");
