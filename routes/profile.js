@@ -7,8 +7,7 @@ const { Sequelize } = require('sequelize');
 const { catchAsync } = require('../Utils/catchAsync');
 
 router.get('/',authenticate,catchAsync(async(req,res,next) => {
-    const {userDetails} = await req.body;
-    console.log(userDetails)
+    const {userDetails} = req.body;
     const USER = user(sequelize, Sequelize.DataTypes);
     const userOBJ = await USER.findOne({
         where : {

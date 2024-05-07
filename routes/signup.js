@@ -5,6 +5,7 @@ const {sequelize} = require('../config/database')
 const { Sequelize } = require('sequelize');
 const { catchAsync } = require('../Utils/catchAsync');
 const {AppError} = require('../Utils/appError');
+const { createUser } = require('../Utils/createUser');
 
 router.get('/',(req,res,next) => {
     res.send('signup')
@@ -12,15 +13,7 @@ router.get('/',(req,res,next) => {
 router.post('/',catchAsync(async(req,res,next)=>{
     let { username,password,firstname,lastname,email,indexUser} = req.body;
     if(!indexUser || indexUser < 0){
-        const USER = user(sequelize,Sequelize.DataTypes);
-        const userObj = await USER.create({
-            username : username,
-            password : password,
-            firstname : firstname,
-            lastname : lastname,
-            email : email,
-            role: "agent"
-    })
+        const userObj = await createUser(firstname,lastname,email,username,password,"agent");
         if(userObj){
             res.status(200).json({
                 "__success_msg__" : `user successfully created`,

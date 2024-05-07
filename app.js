@@ -11,7 +11,8 @@ const {globalErrorHandler} = require('./Middlware/errorHandler');
 let loginRouter = require('./routes/login');
 let signupRouter = require('./routes/signup');
 let forgetPWD =  require('./routes/forgetPWD');
-let profile = require('./routes/profile')
+let profile = require('./routes/profile');
+let user = require('./routes/users');
 const {AppError} = require('./Utils/appError');
 
 var app = express();
@@ -31,6 +32,7 @@ app.use('/auth/login',loginRouter);
 app.use('/auth/signup',signupRouter);
 app.use('/auth/forgetPassword',forgetPWD);
 app.use('/user/profile',profile);
+app.use('/api/user',user);
 
 // error handler
 app.use('*',catchAsync(function(err, req, res, next) {
