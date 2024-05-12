@@ -39,7 +39,6 @@ router.get(
         role: "user",
       },
     });
-    console.log(customer);
     if(customer){
       res.status(200).json(customer);
     }else{
@@ -53,7 +52,6 @@ router.post(
   "/customer/add",authenticate,
   catchAsync(async (req, res, next) => {
     const { username, email, firstname, lastname,password } = req.body;
-    console.log(username);
     const usersList = await USER.findAll({
       where : {
         username :username
