@@ -6,6 +6,7 @@ const user = require("../db/models/user");
 const { sequelize } = require("../config/database");
 const { Sequelize } = require("sequelize");
 const { createUser } = require("../Utils/createUser");
+const { AppError } = require("../Utils/appError");
 
 const USER = user(sequelize, Sequelize.DataTypes);
 /* GET users listing. */
@@ -32,20 +33,54 @@ router.get(
   "/customer",
   authenticate,
   catchAsync(async (req, res, next) => {
-   const customer = await USER.findAll({
+    const customer = await USER.findAll({
+      attributes: ['firstname', 'lastname','username','email'],
       where: {
         role: "user",
       },
     });
-    console.log(customer)
-    res.status(200).json(customer);
+    console.log(customer);
+    if(customer){
+      res.status(200).json(customer);
+    }else{
+      throw new AppError("unable to get the customer",404);
+    }
+    
   })
 );
 //api to add new customer
-router.post('/customer/add',catchAsync(async(req,res,next) => {
-  const {username,password,email,firstname,lastname} = req.body;
-  const userObj = await createUser(firstname,lastname,email,username,password,"user");
-}))
+router.post(
+  "/customer/add",authenticate,
+  catchAsync(async (req, res, next) => {
+    const { username, email, firstname, lastname,password } = req.body;
+    console.log(username);
+    const usersList = await USER.findAll({
+      where : {
+        username :username
+      }
+    })
+    if(usersList.length <= 0){
+      const userObj = await createUser(
+        firstname,
+        lastname,
+        email,
+        username,
+        password,
+        "user"
+      );
+      if (userObj) {
+        res.status(200).json({
+          __success_msg__: `user successfully created`,
+          setPassword: true,
+        });
+      }else{
+        throw new AppError("Uanble to create new customer",400)
+      }
+    }else{
+      throw new AppError("username already exist",409);
+    }
+  })
+);
 //api for getting specific customer
 // router.get(
 //   "/customer/:id",
