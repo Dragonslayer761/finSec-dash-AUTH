@@ -34,7 +34,7 @@ router.get(
   authenticate,
   catchAsync(async (req, res, next) => {
     const customer = await USER.findAll({
-      attributes: ['firstname', 'lastname','username','email'],
+      attributes: ['id','firstname', 'lastname','username','email'],
       where: {
         role: "user",
       },
@@ -80,18 +80,24 @@ router.post(
   })
 );
 //api for getting specific customer
-// router.get(
-//   "/customer/:id",
-//   authenticate,
-//   catchAsync(async (req, res, next) => {
-//     const { id } = req.params;
-//     const customerObj = await USER.findOne({
-//       where: {
-//         role: "user",
-//         id: id,
-//       },
-//     });
-//   })
-// );
+router.get(
+  "/customer/:id",
+  authenticate,
+  catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const customerObj = await USER.findOne({
+      where: {
+        role: "user",
+        id: id,
+      },
+    });
+    if(customerObj){
+      res.status(200).json(customerObj);
+    }else{
+      throw new AppError(`unable to get the customer with id = ${id}`,404);
+    }
+    
+  })
+);
 
 module.exports = router;
